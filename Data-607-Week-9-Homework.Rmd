@@ -1,0 +1,56 @@
+---
+title: "NY Times API"
+author: "Mustafa Telab"
+date: "10/20/2020"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Intro
+
+The goal of this notebook is to utilize a particular API from the New York Times, to pull down information into rstudio.
+In this case I used the API for most popular articles.
+
+
+```{r}
+library(httr)
+library(jsonlite)
+library(ggplot2)
+```
+
+**API KEY:
+XnPiUKStCqos1SlZbSRG1FGGM67aOLTp
+
+Secret: U2gRcWAvt4eAmkse
+
+```{r}
+res = GET("https://api.nytimes.com/svc/mostpopular/v2/viewed/30.json?api-key=XnPiUKStCqos1SlZbSRG1FGGM67aOLTp")
+```
+
+
+```{r}
+data = fromJSON(rawToChar(res$content))
+```
+
+
+```{r}
+most_viewed_30days <- data$results
+
+```
+
+
+```{r}
+ggplot(most_viewed_30days)+geom_bar(aes( x = section))
+```
+
+## Conclusion
+
+Now that we have our data, we can run analysis like the bar graph above, without having to clean the data to the degree that is required when data is scraped from the web instead using APIs.
